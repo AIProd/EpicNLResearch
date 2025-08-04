@@ -4,22 +4,24 @@ import spacy
 import pdfplumber
 import tempfile
 import re
-
+import spacy
+from scispacy.linking import UmlsEntityLinker
 # 📦 Load SciSpaCy + UMLS linker
 @st.cache_resource(show_spinner="Loading SciSpaCy model...")
 def load_nlp():
     nlp = spacy.load("en_core_sci_sm")
+
     if "sentencizer" not in nlp.pipe_names:
         nlp.add_pipe("sentencizer", first=True)
-    if "entity_linker" not in nlp.pipe_names:
-        nlp.add_pipe("entity_linker", config={
-            "resolve_abbreviations": True,
-            "name": "umls"
-        })
+
+    if "umls_linker" not in nlp.pipe_names:
+        linker = UmlsEntityLinker(resolve_abbreviations=True, name="umls")
+        nlp.add_pipe(linker, last=True, name="umls_linker")  # add the instance, give it a name
+
     return nlp
 
 nlp = load_nlp()
-linker = nlp.get_pipe("entity_linker")
+linker = nlp.get_pipe("umls_linker")
 
 # 🔍 Keywords + regex
 BLADDER_KWS = ["bladder", "urothelial", "urinary", "ureter", "transitional cell carcinoma"]
