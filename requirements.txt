@@ -1,18 +1,5 @@
-# --- App & Interface ---
 streamlit
-pdfplumber
 pandas
-duckdb
-typer
-rapidfuzz
-reportlab
-
-# --- NLP Stack ---
 spacy==3.7.5
 scispacy==0.5.5
-
-# --- Biomedical Model (S3 from AI2, not Hugging Face auth required) ---
 en-core-sci-sm @ https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz
-
-# --- Optional: if using medspacy and QuickUMLS ---
-medspacy
