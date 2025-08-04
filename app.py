@@ -11,12 +11,15 @@ def load_nlp():
     nlp = spacy.load("en_core_sci_sm")
     if "sentencizer" not in nlp.pipe_names:
         nlp.add_pipe("sentencizer", first=True)
-    if "scispacy_linker" not in nlp.pipe_names:
-        nlp.add_pipe("scispacy_linker", config={"resolve_abbreviations": True, "name": "umls"})
+    if "entity_linker" not in nlp.pipe_names:
+        nlp.add_pipe("entity_linker", config={
+            "resolve_abbreviations": True,
+            "name": "umls"
+        })
     return nlp
 
 nlp = load_nlp()
-linker = nlp.get_pipe("scispacy_linker")
+linker = nlp.get_pipe("entity_linker")
 
 # 🔍 Keywords + regex
 BLADDER_KWS = ["bladder", "urothelial", "urinary", "ureter", "transitional cell carcinoma"]
